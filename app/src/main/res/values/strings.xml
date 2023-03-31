@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">ToDoList</string>
     <string name="title_app">Todo list app</string>
-    <string name="subtitle_category">category</string>
+    <string name="subtitle_category">category:</string>
+    <string name="task">Task:</string>
 </resources>
