@@ -2,5 +2,10 @@
     <string name="app_name">ToDoList</string>
     <string name="title_app">Todo list app</string>
     <string name="subtitle_category">category:</string>
+    <string name="add_task">Add to task:</string>
+    <string name="business">business</string>
+    <string name="personal">Personal</string>
+    <string name="other">Other</string>
+    <string name="create_task">Create Task</string>
     <string name="task">Task:</string>
 </resources>
