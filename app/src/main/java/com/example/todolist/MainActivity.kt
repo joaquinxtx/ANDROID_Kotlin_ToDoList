@@ -4,12 +4,14 @@ import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.util.function.Predicate
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,9 +22,10 @@ class MainActivity : AppCompatActivity() {
     )
 
     private val tasks= mutableListOf(
-        Task("pruebaBussines",TaskCategory.Business),
-        Task("pruebaBussines",TaskCategory.Personal),
-        Task("pruebaBussines",TaskCategory.Other )
+
+        Task("Personal",TaskCategory.Personal),
+        Task("Business",TaskCategory.Business),
+        Task("Other",TaskCategory.Other ),
     )
     private lateinit var rvCategories: RecyclerView
     private lateinit var categoriesAdapter: CategoriesAdapter
@@ -31,7 +34,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var rvTasks: RecyclerView
     private lateinit var tasksAdapter: TasksAdapter
 
+
     private lateinit var fabAddTask:FloatingActionButton
+    private lateinit var fabDeleteTasks:FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +49,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun initListeners() {
         fabAddTask.setOnClickListener{showDialog()}
+
+        fabDeleteTasks.setOnClickListener{deleteData()}
     }
+
 
     private fun showDialog(){
         val dialog= Dialog(this)
@@ -71,29 +79,45 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-
-
         dialog.show()
+    }
+    private fun deleteData() {
+            tasks.removeAll{it.isSelected}
+            updateTasks()
     }
 
     private fun initComponent() {
         rvCategories=findViewById(R.id.rvCategories)
         rvTasks=findViewById(R.id.rvTasks)
         fabAddTask=findViewById(R.id.fabAddTask)
+
+        fabDeleteTasks=findViewById(R.id.fabDeleteTasks)
     }
 
     private fun initUI() {
-        categoriesAdapter= CategoriesAdapter(categories)
+        categoriesAdapter= CategoriesAdapter(categories){updateCategories(it)}
         rvCategories.layoutManager=LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         rvCategories.adapter=categoriesAdapter
 
-        tasksAdapter= TasksAdapter(tasks)
+        tasksAdapter= TasksAdapter(tasks){onItemSelected(it)}
         rvTasks.layoutManager=LinearLayoutManager(this)
         rvTasks.adapter=tasksAdapter
     }
 
-    private fun updateTasks(){
+    private fun  onItemSelected(position:Int){
+        tasks[position].isSelected=!tasks[position].isSelected
+        updateTasks()
+    }
 
+    private fun updateCategories(position:Int){
+        categories[position].isSelected=!categories[position].isSelected
+        categoriesAdapter.notifyItemChanged(position)
+        updateTasks()
+    }
+    private fun updateTasks(){
+        val selectedCategories:List<TaskCategory> = categories.filter { it.isSelected }
+        val newTasks = tasks.filter{selectedCategories.contains(it.category)}
+        tasksAdapter.tasks=newTasks
         tasksAdapter.notifyDataSetChanged()
     }
 }
