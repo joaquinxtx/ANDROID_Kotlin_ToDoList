@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_app">#302F2F</color>
+    <color name="background_disable">#99333333</color>
+    <color name="background_app_todo">#EFEEF1</color>
+    <color name="subtitle_text">#B2B3B3</color>
+    <color name="accent">#E8054C</color>
+
+    <color name="business_category">#EC4F06</color>
+    <color name="personal_category">#04DEF1</color>
+    <color name="other_category">#83ED06</color>
+</resources>
