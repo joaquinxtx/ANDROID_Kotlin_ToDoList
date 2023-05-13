@@ -74,7 +74,6 @@ class MainActivity : AppCompatActivity() {
             getSettings().filter { firstTime }.collect { settingsModel ->
                 if (settingsModel != null) {
                     runOnUiThread {
-
                         switchDarkMode.isChecked = settingsModel.darkMode
                         firstTime = !firstTime
                     }
